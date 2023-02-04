@@ -10,13 +10,13 @@ export default app;
 
 app.get('/products', async (req: Request, res: Response) => {
     console.log('/products (GET)')
-    const { product_category, product_id, owner_id, product_name, product_status, limit, offset } = req.query;
+    const { product_category_id, product_id, owner_id, product_name, product_status, limit, offset } = req.query;
 
-    let productCategoryCondition = '';
-    if (Array.isArray(product_category)) {
-        productCategoryCondition = `product_category IN (${product_category.join(", ")})`
+    let productCategoryIdCondition = '';
+    if (Array.isArray(product_category_id)) {
+        productCategoryIdCondition = `product_category_id IN (${product_category_id.join(", ")})`
     } else {
-        productCategoryCondition = `${product_category === undefined ? "" : `product_category = ${product_category}`}`
+        productCategoryIdCondition = `${product_category_id === undefined ? "" : `product_category_id = ${product_category_id}`}`
     }
 
     let productIdCondition = '';
@@ -39,10 +39,10 @@ app.get('/products', async (req: Request, res: Response) => {
         product_name.forEach((pn, index) => {
             product_name[index] = `'%${pn}%'`
         });
-        productNameCondition = `product_name ILIKE ANY (array[${product_name.join(", ")}])`
+        productNameCondition = `LOWER(product_name) LIKE ANY (array[${product_name.join(", ")}])`
     } else {
         productNameCondition
-            = `${product_name === undefined ? "" : `product_name ILIKE '%${product_name}%'`}`
+            = `${product_name === undefined ? "" : `LOWER(product_name) LIKE '%${product_name}%'`}`
     }
 
     let productStatusCondition = '';
@@ -50,7 +50,7 @@ app.get('/products', async (req: Request, res: Response) => {
         productStatusCondition = `product_status = '${product_status}'`
     }
 
-    const conditionString = [productCategoryCondition, productIdCondition, ownerIdCondition, productNameCondition, productStatusCondition].filter(i => i !== '')
+    const conditionString = [productCategoryIdCondition, productIdCondition, ownerIdCondition, productNameCondition, productStatusCondition].filter(i => i !== '')
 
     writePool.query(
         `SELECT * FROM product
@@ -81,13 +81,13 @@ app.get('/products', async (req: Request, res: Response) => {
 
 app.get('/products/length', async (req: Request, res: Response) => {
     console.log('/products/length (GET)')
-    const { product_category, product_id, owner_id, product_name, product_status } = req.query;
+    const { product_category_id, product_id, owner_id, product_name, product_status } = req.query;
 
-    let productCategoryCondition = '';
-    if (Array.isArray(product_category)) {
-        productCategoryCondition = `product_category IN (${product_category.join(", ")})`
+    let productCategoryIdCondition = '';
+    if (Array.isArray(product_category_id)) {
+        productCategoryIdCondition = `product_category_id IN (${product_category_id.join(", ")})`
     } else {
-        productCategoryCondition = `${product_category === undefined ? "" : `product_category = ${product_category}`}`
+        productCategoryIdCondition = `${product_category_id === undefined ? "" : `product_category_id = ${product_category_id}`}`
     }
 
     let productIdCondition = '';
@@ -110,10 +110,10 @@ app.get('/products/length', async (req: Request, res: Response) => {
         product_name.forEach((pn, index) => {
             product_name[index] = `'%${pn}%'`
         });
-        productNameCondition = `product_name ILIKE ANY (array[${product_name.join(", ")}])`
+        productNameCondition = `LOWER(product_name) LIKE ANY (array[${product_name.join(", ")}])`
     } else {
         productNameCondition
-            = `${product_name === undefined ? "" : `product_name ILIKE '%${product_name}%'`}`
+            = `${product_name === undefined ? "" : `LOWER(product_name) LIKE '%${product_name}%'`}`
     }
 
     let productStatusCondition = '';
@@ -121,7 +121,7 @@ app.get('/products/length', async (req: Request, res: Response) => {
         productStatusCondition = `product_status = '${product_status}'`
     }
 
-    const conditionString = [productCategoryCondition, productIdCondition, ownerIdCondition, productNameCondition, productStatusCondition].filter(i => i !== '')
+    const conditionString = [productCategoryIdCondition, productIdCondition, ownerIdCondition, productNameCondition, productStatusCondition].filter(i => i !== '')
 
     writePool.query(
         `SELECT COUNT(*) as count FROM product
