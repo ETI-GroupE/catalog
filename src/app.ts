@@ -2,7 +2,7 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-
+import multer from './middleware/upload';
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -11,9 +11,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json())
 app.use(cookieParser());
+app.use(multer)
 
 import productAPI from "./api/product";
 import categoryAPI from "./api/category";
+import processFile from './middleware/upload';
 app.use("/api/v1",
     productAPI,
     categoryAPI,
