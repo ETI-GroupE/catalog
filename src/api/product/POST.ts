@@ -4,8 +4,14 @@ import { writePool } from "../../db";
 import { Storage } from '@google-cloud/storage';
 import { format } from 'util';
 import path from "path"
-console.log(path.join(__dirname, "./google-cloud-key.json"))
-const storage = new Storage({ keyFilename: path.join(__dirname, "google-cloud-key.json"), projectId: "eti-assignment2" })
+
+var storage;
+if (process.env.K_SERVICE) {
+    storage = new Storage()
+
+} else {
+    storage = new Storage({ keyFilename: path.join(__dirname, "google-cloud-key.json"), projectId: "eti-assignment2" })
+}
 const bucket = storage.bucket("buyee-image-assets")
 
 const app = express();
