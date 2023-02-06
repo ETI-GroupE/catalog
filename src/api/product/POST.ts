@@ -86,7 +86,9 @@ export const uploadImage = (file) => new Promise((resolve, reject) => {
     const cleanName = originalname.replace(/ /g, "_")
     console.log(cleanName)
     const extension = cleanName.split(".").at(-1)
+    console.log(extension)
     const finalFile = `${new Date().getTime()}.${extension}`
+    console.log(finalFile)
     const blob = bucket.file(finalFile)
     const blobStream = blob.createWriteStream({
         resumable: false
