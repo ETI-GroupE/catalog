@@ -20,6 +20,12 @@ app.put("/product/:id", async (req: Request, res: Response) => {
         return;
     }
 
+    if (Number(product_original_stock) < 0) {
+        res.status(400);
+        res.send();
+        return;
+    }
+
     writePool.query(
         `
         UPDATE product
