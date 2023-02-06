@@ -15,7 +15,10 @@ app.use(multer)
 
 import productAPI from "./api/product";
 import categoryAPI from "./api/category";
-import processFile from './middleware/upload';
+import verifyAuth from './middleware/verifyAuth';
+if (process.env.K_SERVICE) {
+    app.use(verifyAuth);
+}
 app.use("/api/v1",
     productAPI,
     categoryAPI,
