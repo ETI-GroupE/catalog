@@ -85,7 +85,9 @@ export const uploadImage = (file) => new Promise((resolve, reject) => {
     console.log(originalname)
     const cleanName = originalname.replace(/ /g, "_")
     console.log(cleanName)
-    console.log(cleanName.split("."), cleanName.split(".").at(-1))
+    console.log(cleanName.split("."))
+    console.log(cleanName.split(".").at(-1))
+
     const extension = cleanName.split(".").at(-1)
     console.log(extension)
     const finalFile = `${new Date().getTime()}.${extension}`
